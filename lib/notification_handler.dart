@@ -1,28 +1,21 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:notifications/notifications.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:stock_notif/logger.dart';
 
 class NotificationHandler {
-  Notifications _notifications = Notifications();
-  StreamSubscription<NotificationEvent>? _subscription;
+  void init() async {
+    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+        FlutterLocalNotificationsPlugin();
+    dlog("NotificationHandler.init() called");
+    final List<ActiveNotification>? activeNotifications =
+        await flutterLocalNotificationsPlugin
+            .resolvePlatformSpecificImplementation<
+                AndroidFlutterLocalNotificationsPlugin>()
+            ?.getActiveNotifications();
 
-  void startListening() {
-    _notifications = new Notifications();
-    try {
-      _subscription = _notifications.notificationStream!.listen(onData);
-    } on NotificationException catch (exception) {
-      debugPrint(exception.toString());
-    }
-  }
-
-  void onData(NotificationEvent event) {
-    debugPrint(event.toString());
-  }
-
-  
-
-  void stopListening() {
-    _subscription?.cancel();
+    // debugPrint("xyz ActiveNotifications: ${activeNotifications![0].title}!");
+    activeNotifications!.forEach((element) {
+      dlog("ActiveNotifications: ${element.body}!");
+    });
   }
 }
