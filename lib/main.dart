@@ -1,8 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:logger_plus/logger_plus.dart';
 import 'package:stock_notif/init.dart';
 import 'package:stock_notif/logger.dart';
-import 'package:workmanager/workmanager.dart';
 
 void main() {
   
@@ -10,10 +11,18 @@ void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -26,7 +35,6 @@ class MyApp extends StatelessWidget {
         child: GestureDetector(
           onTap: () {
             dlog("cancelling all notifs");
-            Workmanager().cancelAll();
           },
           child:const Center(child: Text('Click to disable notifs')),
         ),

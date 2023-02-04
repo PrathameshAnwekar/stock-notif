@@ -1,38 +1,30 @@
+import 'dart:isolate';
+
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/material.dart';
 
 import 'package:stock_notif/logger.dart';
 import 'package:stock_notif/notification_handler.dart';
-import 'package:workmanager/workmanager.dart';
 
+int helloAlarmID = 0;
 @pragma('vm:entry-point')
-void callbackDispatcher() {
-  Workmanager().executeTask((task, inputData) async {
-    try {
-      dlog("ExecutingTask");
-      NotificationHandler().init();
-    } catch (err) {
-      elog("WorkManagerException$err"); // Logger flutter package, prints error on the debug console
-      // throw Exception(err);
-    }
-
-    return Future.value(true);
-  });
+void printHello() async {
+  while (true) {
+    await Future.delayed(Duration(seconds: 10), () {
+      NotificationHandler.check();
+      
+    });
+  }
 }
 
 class InitServices {
-  void init() {
+  void init() async {
     ilog("InitServices.init() called");
     WidgetsFlutterBinding.ensureInitialized();
-    Workmanager().initialize(
-        callbackDispatcher, // The top level function, aka _callbackDispatcher
-        isInDebugMode:
-            true // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
-        );
-    Workmanager().registerOneOffTask(
-        "oneoff-task-identifier", "simplePeriodicTask",
-        backoffPolicy: BackoffPolicy.linear,
-        backoffPolicyDelay: const Duration(seconds: 5),
-        initialDelay: const Duration(seconds: 0),
-        );
+    await AndroidAlarmManager.initialize();
+
+    await AndroidAlarmManager.oneShot(
+        const Duration(seconds: 0), helloAlarmID, printHello,
+        wakeup: true, rescheduleOnReboot: true);
   }
 }
