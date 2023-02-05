@@ -256,14 +256,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.8.0"
-  notifications_listener_service:
+  notifications:
     dependency: "direct main"
     description:
-      name: notifications_listener_service
-      sha256: "0ec87dae985376f2a39101d2f99818469c09dc7b765f8dd371d7fe90e171f399"
+      name: notifications
+      sha256: "875b802ca105dcac01e380b9b25154a3bfaf2b899be8e2dd9df467255ad14b16"
       url: "https://pub.dev"
     source: hosted
-    version: "0.0.2"
+    version: "2.0.1"
   path:
     dependency: transitive
     description:

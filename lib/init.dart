@@ -9,12 +9,11 @@ import 'package:stock_notif/notification_handler.dart';
 int helloAlarmID = 0;
 @pragma('vm:entry-point')
 void printHello() async {
-  while (true) {
-    await Future.delayed(Duration(seconds: 10), () {
-      NotificationHandler.check();
-      
-    });
-  }
+  // while (true) {
+  await Future.delayed(Duration(seconds: 0), () {
+    NotificationHandler.startListening();
+  });
+  // }
 }
 
 class InitServices {
