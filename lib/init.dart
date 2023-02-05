@@ -2,28 +2,19 @@ import 'dart:isolate';
 
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:stock_notif/controllers/home_controller.dart';
+import 'package:stock_notif/hiveStore.dart';
 
 import 'package:stock_notif/logger.dart';
-import 'package:stock_notif/notification_handler.dart';
+import 'package:stock_notif/services/notificationService.dart';
 
 int helloAlarmID = 0;
-@pragma('vm:entry-point')
-void printHello() async {
-  // while (true) {
-  await Future.delayed(Duration(seconds: 0), () {
-    NotificationHandler.startListening();
-  });
-  // }
-}
 
 class InitServices {
-  void init() async {
-    ilog("InitServices.init() called");
+  init() async {
     WidgetsFlutterBinding.ensureInitialized();
+    ilog("InitServices.init() called");
+    await HiveStore.init();
     await AndroidAlarmManager.initialize();
-
-    await AndroidAlarmManager.oneShot(
-        const Duration(seconds: 0), helloAlarmID, printHello,
-        wakeup: true, rescheduleOnReboot: true);
   }
 }
