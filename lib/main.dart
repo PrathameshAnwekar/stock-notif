@@ -5,7 +5,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:logger_plus/logger_plus.dart';
 import 'package:stock_notif/init.dart';
 import 'package:stock_notif/logger.dart';
+import 'package:stock_notif/services/newNotifService.dart';
 import 'package:stock_notif/view/home.dart';
+import 'package:stock_notif/view/newHome.dart';
 
 void main() async {
   await InitServices().init();
@@ -29,7 +31,7 @@ class _MyAppState extends State<MyApp> {
         useMaterial3: true,
         colorSchemeSeed: Colors.black,
       ),
-      home: Home()
+      home: NewHome()
     );
   }
 }

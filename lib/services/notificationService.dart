@@ -9,7 +9,7 @@ class NotificationService {
   static StreamSubscription<NotificationEvent>? _subscription;
   static void onData(NotificationEvent event) {
     try {
-      dlog("\npackageName: ${event.packageName}\ntitle:${event.title}\nmessage:${event.message!}");
+      dlog("\npackageName: ${event.packageName}\ntitle:${event.title}\nmessage:${event.message}");
       audioPlay(event);
     } catch (e) {
       elog(e.toString());
