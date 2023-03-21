@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:notifications/notifications.dart';
 import 'package:stock_notif/logger.dart';
 import 'package:stock_notif/services/audioService.dart';
@@ -9,9 +8,12 @@ class NotificationService {
   static Notifications? _notifications;
   static StreamSubscription<NotificationEvent>? _subscription;
   static void onData(NotificationEvent event) {
-    dlog(
-        event.packageName.toString() + event.title.toString() + event.message!);
-    audioPlay(event);
+    try {
+      dlog("\npackageName: ${event.packageName}\ntitle:${event.title}\nmessage:${event.message!}");
+      audioPlay(event);
+    } catch (e) {
+      elog(e.toString());
+    }
   }
 
   static void startListening() {

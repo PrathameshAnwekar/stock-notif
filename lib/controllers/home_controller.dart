@@ -10,10 +10,7 @@ class HomeController extends ChangeNotifier {
   static bool alarmServiceStatus =
       HiveStore.storage.get("alarmServiceStatus", defaultValue: false);
 
-  List soundList = [
-    "BEEP BEEP"
-        "BEEP BEEP BEEP"
-  ];
+  List soundList = ["SHORT_BEEP", "LONG_BEEP"];
 
   Icon serviceStatusIcon = alarmServiceStatus
       ? const Icon(Icons.stop_circle)
@@ -29,6 +26,9 @@ class HomeController extends ChangeNotifier {
       alarmServiceStatus = !alarmServiceStatus;
       HiveStore.storage.put("alarmServiceStatus", true);
     }
+    serviceStatusIcon = alarmServiceStatus
+      ? const Icon(Icons.stop_circle)
+      : const Icon(Icons.done_rounded);
     notifyListeners();
   }
 }

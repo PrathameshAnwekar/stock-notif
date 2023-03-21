@@ -27,7 +27,8 @@ class AlarmService {
 
   static stopService() {
     dlog("Stopped AlarmManager Service");
-    AndroidAlarmManager.cancel(alarmID);
     NotificationService.stopListening();
+    AndroidAlarmManager.cancel(alarmID);
+    
   }
 }
