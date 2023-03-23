@@ -30,7 +30,7 @@ class _MyAppState extends State<MyApp> {
         useMaterial3: true,
         colorSchemeSeed: Colors.black,
       ),
-      home: NewHome()
+      home: Home()
     );
   }
 }

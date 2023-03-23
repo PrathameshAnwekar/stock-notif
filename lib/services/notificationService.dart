@@ -12,17 +12,15 @@ class NotificationService {
   static bool permissionGranted = false;
   static bool serviceRunning = false;
   static StreamSubscription<ServiceNotificationEvent>? _subscription;
-  
 
-  static void init() {
-    permissionGranted =
-        HiveStore.storage.get(Constants.permissionGranted) ?? false;
+  static init() async {
+    permissionGranted = await isPermissionGranted();
     serviceRunning =
         HiveStore.storage.get(Constants.notificationServiceStatus) ?? false;
-    dlog("NotificationService.init() permissionGranted: $permissionGranted, serviceRunning: $serviceRunning");
+    dlog(
+        "NotificationService.init() permissionGranted: $permissionGranted, serviceRunning: $serviceRunning");
   }
 
-  
   static void startListening() async {
     dlog("Starting to listen to notifications");
     await HiveStore.storage.put(Constants.notificationServiceStatus, true);
@@ -40,14 +38,13 @@ class NotificationService {
   static Future<bool> requestPermission() async {
     final res = await NotificationListenerService.requestPermission();
     dlog("Permissions given: $res");
-    await HiveStore.storage.put(Constants.permissionGranted, res);
+    permissionGranted = res;
     return res;
   }
 
   static Future<bool> isPermissionGranted() async {
     final bool res = await NotificationListenerService.isPermissionGranted();
     dlog("Are permissions granted: $res");
-    await HiveStore.storage.put(Constants.permissionGranted, res);
     return res;
   }
 }

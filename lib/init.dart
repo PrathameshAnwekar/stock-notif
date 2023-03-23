@@ -11,6 +11,6 @@ class InitServices {
 
     await HiveStore.init();
     await AndroidAlarmManager.initialize();
-    NotificationService.init();
+    await NotificationService.init();
   }
 }
