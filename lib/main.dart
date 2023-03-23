@@ -4,10 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:logger_plus/logger_plus.dart';
 import 'package:stock_notif/init.dart';
-import 'package:stock_notif/logger.dart';
-import 'package:stock_notif/services/newNotifService.dart';
-import 'package:stock_notif/view/home.dart';
-import 'package:stock_notif/view/newHome.dart';
+import 'package:stock_notif/services/logger.dart';
+import 'package:stock_notif/views/home.dart';
+import 'package:stock_notif/views/newHome.dart';
 
 void main() async {
   await InitServices().init();
@@ -26,7 +25,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Notif App',
       theme: ThemeData(
         useMaterial3: true,
         colorSchemeSeed: Colors.black,

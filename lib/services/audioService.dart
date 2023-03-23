@@ -1,5 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
-import 'package:stock_notif/logger.dart';
+import 'package:stock_notif/services/logger.dart';
 
 class AudioService {
   static final _player = AudioPlayer();

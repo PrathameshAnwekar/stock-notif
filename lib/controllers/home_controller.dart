@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:stock_notif/hiveStore.dart';
+import 'package:stock_notif/storage/hiveStore.dart';
 import 'package:stock_notif/services/alarmService.dart';
 
 final homeProvider = ChangeNotifierProvider((ref) => HomeController());
@@ -12,7 +12,7 @@ class HomeController extends ChangeNotifier {
 
   List soundList = ["SHORT_BEEP", "LONG_BEEP"];
 
-  Icon serviceStatusIcon = alarmServiceStatus
+  static Icon serviceStatusIcon = alarmServiceStatus
       ? const Icon(Icons.stop_circle)
       : const Icon(Icons.done_rounded);
 
