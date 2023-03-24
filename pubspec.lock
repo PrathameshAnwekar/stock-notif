@@ -5,10 +5,10 @@ packages:
     dependency: "direct main"
     description:
       name: android_alarm_manager_plus
-      sha256: "71e796198588e0038dd125bf8c91683b3237b938ffad037413245c689b87ae28"
+      sha256: "8647cc5f9339f3955a2bd9ec40e0f10c3a80049f31f80b3ffdd87e07bb73fce2"
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.0"
+    version: "2.1.1"
   assets_audio_player:
     dependency: "direct main"
     description:

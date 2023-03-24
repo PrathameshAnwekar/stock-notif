@@ -22,15 +22,17 @@ class NotificationService {
         "NotificationService.init() permissionGranted: $permissionGranted, serviceRunning: $serviceRunning");
   }
 
-  static void startListening() async {
-    dlog("Starting to listen to notifications");
-    await HiveStore.storage.put(Constants.notificationServiceStatus, true);
-    NotificationListenerService.notificationsStream.listen((event) {
-      dlog("Notification received: $event");
+  static void onData(ServiceNotificationEvent event){
+dlog("Notification received: $event");
       if (checkHotKeywords(event)) {
         AudioService.playSound();
       }
-    });
+  }
+
+  static void startListening() async {
+    dlog("Starting to listen to notifications");
+    await HiveStore.storage.put(Constants.notificationServiceStatus, true);
+    _subscription = NotificationListenerService.notificationsStream.listen(onData);
   }
 
   static void stopListening() async {

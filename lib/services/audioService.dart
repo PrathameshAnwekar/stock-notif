@@ -1,8 +1,7 @@
-import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:stock_notif/services/logger.dart';
 
-class NewAudioService {
+class AudioService {
   static final _player = AudioPlayer();
   static const AudioContext audioContext = AudioContext(
     iOS: AudioContextIOS(
@@ -18,20 +17,20 @@ class NewAudioService {
     ),
   );
   static void playSound() {
-    _player.setVolume(1);
+    _player.setVolume(0.5);
     dlog("Playing Sound");
     _player.play(AssetSource("sounds/short_beep.mp3"),
-        mode: PlayerMode.lowLatency, ctx: audioContext);
+        mode: PlayerMode.mediaPlayer);
   }
 }
 
-class AudioService {
-  static final _player = AssetsAudioPlayer();
+// class NAudioService {
+//   static final _player = AssetsAudioPlayer();
 
-  static void playSound() {
-    dlog("Playing Sound");
-    _player.open(
-      Audio("assets/sounds/short_beep.mp3"), showNotification: true, respectSilentMode: false,
-    );
-  }
-}
+//   static void playSound() {
+//     dlog("Playing Sound");
+//     _player.open(
+//       Audio("assets/sounds/short_beep.mp3"), showNotification: true, respectSilentMode: false,
+//     );
+//   }
+// }
