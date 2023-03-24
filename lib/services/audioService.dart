@@ -1,14 +1,37 @@
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:stock_notif/services/logger.dart';
 
-class AudioService {
+class NewAudioService {
   static final _player = AudioPlayer();
-
+  static const AudioContext audioContext = AudioContext(
+    iOS: AudioContextIOS(
+      category: AVAudioSessionCategory.ambient,
+      options: [],
+    ),
+    android: AudioContextAndroid(
+      isSpeakerphoneOn: true,
+      stayAwake: true,
+      contentType: AndroidContentType.sonification,
+      usageType: AndroidUsageType.assistanceSonification,
+      audioFocus: AndroidAudioFocus.gain,
+    ),
+  );
   static void playSound() {
     _player.setVolume(1);
     dlog("Playing Sound");
-    _player.play(
-      AssetSource("sounds/long_beep.mp3"),
+    _player.play(AssetSource("sounds/short_beep.mp3"),
+        mode: PlayerMode.lowLatency, ctx: audioContext);
+  }
+}
+
+class AudioService {
+  static final _player = AssetsAudioPlayer();
+
+  static void playSound() {
+    dlog("Playing Sound");
+    _player.open(
+      Audio("assets/sounds/short_beep.mp3"), showNotification: true, respectSilentMode: false,
     );
   }
 }

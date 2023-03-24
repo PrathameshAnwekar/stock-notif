@@ -41,6 +41,7 @@ dependencies:
   audioplayers: ^3.0.1
   android_alarm_manager_plus: ^2.1.0
   notification_listener_service: any
+  assets_audio_player: ^3.0.6
 
 dev_dependencies:
   flutter_test:

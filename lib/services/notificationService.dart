@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:notification_listener_service/notification_event.dart';
 import 'package:notification_listener_service/notification_listener_service.dart';
+import 'package:stock_notif/services/audioService.dart';
 import 'package:stock_notif/services/logger.dart';
 import 'package:stock_notif/storage/constants.dart';
 import 'package:stock_notif/storage/hiveStore.dart';
@@ -26,6 +27,9 @@ class NotificationService {
     await HiveStore.storage.put(Constants.notificationServiceStatus, true);
     NotificationListenerService.notificationsStream.listen((event) {
       dlog("Notification received: $event");
+      if (checkHotKeywords(event)) {
+        AudioService.playSound();
+      }
     });
   }
 
@@ -46,5 +50,36 @@ class NotificationService {
     final bool res = await NotificationListenerService.isPermissionGranted();
     dlog("Are permissions granted: $res");
     return res;
+  }
+
+  static bool checkHotKeywords(ServiceNotificationEvent notif) {
+    final List titleKeywords =
+        HiveStore.storage.get(Constants.titleKeywords) ?? [];
+    final List contentKeywords =
+        HiveStore.storage.get(Constants.contentKeywords) ?? [];
+    bool titleMatch = false;
+    bool contentMatch = false;
+
+    String title = notif.title == null ? "" : notif.title!.toLowerCase();
+    String content = notif.content == null ? "" : notif.content!.toLowerCase();
+
+    List titleWords = title.split(" ");
+    List contentWords = content.split(" ");
+
+    for (String word in titleWords) {
+      if (titleKeywords.contains(word)) {
+        titleMatch = true;
+        break;
+      }
+    }
+
+    for (String word in contentWords) {
+      if (contentKeywords.contains(word)) {
+        contentMatch = true;
+        break;
+      }
+    }
+
+    return (titleMatch || contentMatch) && !notif.hasRemoved!;
   }
 }

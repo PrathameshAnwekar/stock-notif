@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:stock_notif/services/alarmService.dart';
 import 'package:stock_notif/services/logger.dart';
 import 'package:stock_notif/services/notificationService.dart';
 import 'package:stock_notif/storage/constants.dart';
@@ -47,11 +48,23 @@ class _HomeState extends ConsumerState<Home> {
                   permissionGranted.value ? Colors.green : Colors.red,
             ),
           ),
-          Chip(
-            label: Text(serviceStatus.value
-                ? "Service Running"
-                : "Service not running"),
-            backgroundColor: serviceStatus.value ? Colors.green : Colors.red,
+          GestureDetector(
+            onTap: () {
+              if (!serviceStatus.value) {
+                AlarmService.startService().then((value) {
+                  serviceStatus.value = value;
+                });
+              } else {
+                AlarmService.stopService();
+                serviceStatus.value = false;
+              }
+            },
+            child: Chip(
+              label: Text(serviceStatus.value
+                  ? "Service Running"
+                  : "Service not running"),
+              backgroundColor: serviceStatus.value ? Colors.green : Colors.red,
+            ),
           )
         ]),
         Text("Hot keywords"),
