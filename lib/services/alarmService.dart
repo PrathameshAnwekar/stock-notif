@@ -6,7 +6,7 @@ import 'package:stock_notif/storage/hiveStore.dart';
 
 @pragma('vm:entry-point')
 void mainService() async {
-  await Future.delayed(const Duration(seconds: 0), ()async {
+  await Future.delayed(const Duration(seconds: 0), () async {
     dlog(
         "Started Service for listening to notifications in the background now.");
     await HiveStore.init();
@@ -17,7 +17,7 @@ void mainService() async {
 class AlarmService {
   static int alarmID = 0;
   static bool serviceStatus = false;
-  static startService() async {
+  static Future<bool> startService() async {
     try {
       await AndroidAlarmManager.oneShot(
               const Duration(seconds: 0), alarmID, mainService,
@@ -26,9 +26,12 @@ class AlarmService {
         HiveStore.storage.put(Constants.notificationServiceStatus, true);
         serviceStatus = true;
         dlog("Started AlarmManager Service");
+        
       });
+      return Future.value(true);
     } catch (e) {
       elog(e.toString());
+      return Future.value(false);
     }
   }
 

@@ -51,6 +51,7 @@ class _HomeState extends ConsumerState<Home> {
           GestureDetector(
             onTap: () {
               if (!serviceStatus.value) {
+                
                 AlarmService.startService().then((value) {
                   serviceStatus.value = value;
                 });
@@ -67,8 +68,8 @@ class _HomeState extends ConsumerState<Home> {
             ),
           )
         ]),
-        Text("Hot keywords"),
-        Text(
+        const Text("Hot keywords"),
+        const Text(
             "A high priority sound will be played if any of these keywords are found in a notification"),
         //clear title keywords
         TextButton(
@@ -94,11 +95,12 @@ class _HomeState extends ConsumerState<Home> {
               hintText: "Title keywords",
             ),
             onSubmitted: (value) {
+              if (value.trim().isEmpty) return;
               titleController.clear();
               titleKeywords.value.add(value);
               HiveStore.storage
                   .put(Constants.titleKeywords, titleKeywords.value)
-                  .then((value) {
+                  .then((value) async {
                 setState(() {});
               });
             },
@@ -123,11 +125,14 @@ class _HomeState extends ConsumerState<Home> {
             ),
             textInputAction: TextInputAction.done,
             onSubmitted: (value) {
+              if (value.trim().isEmpty) return;
               contentController.clear();
               contentKeywords.value.add(value);
               HiveStore.storage
                   .put(Constants.contentKeywords, contentKeywords.value)
-                  .then((value) => setState(() {}));
+                  .then((value) async {
+                setState(() {});
+              });
             },
           ),
         ),

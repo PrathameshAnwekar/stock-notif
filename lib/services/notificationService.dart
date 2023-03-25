@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hive/hive.dart';
 import 'package:notification_listener_service/notification_event.dart';
 import 'package:notification_listener_service/notification_listener_service.dart';
 import 'package:stock_notif/services/audioService.dart';
@@ -22,17 +23,18 @@ class NotificationService {
         "NotificationService.init() permissionGranted: $permissionGranted, serviceRunning: $serviceRunning");
   }
 
-  static void onData(ServiceNotificationEvent event){
-dlog("Notification received: $event");
-      if (checkHotKeywords(event)) {
-        AudioService.playSound();
-      }
+  static void onData(ServiceNotificationEvent event) async {
+    dlog("Notification received: $event");
+    if (await checkHotKeywords(event)) {
+      AudioService.playSound();
+    }
   }
 
   static void startListening() async {
     dlog("Starting to listen to notifications");
     await HiveStore.storage.put(Constants.notificationServiceStatus, true);
-    _subscription = NotificationListenerService.notificationsStream.listen(onData);
+    _subscription =
+        NotificationListenerService.notificationsStream.listen(onData);
   }
 
   static void stopListening() async {
@@ -54,11 +56,14 @@ dlog("Notification received: $event");
     return res;
   }
 
-  static bool checkHotKeywords(ServiceNotificationEvent notif) {
+  static Future<bool> checkHotKeywords(ServiceNotificationEvent notif) async {
+    
     final List titleKeywords =
         HiveStore.storage.get(Constants.titleKeywords) ?? [];
+    dlog(titleKeywords.toString());
     final List contentKeywords =
         HiveStore.storage.get(Constants.contentKeywords) ?? [];
+    dlog(contentKeywords.toString());
     bool titleMatch = false;
     bool contentMatch = false;
 
@@ -71,6 +76,7 @@ dlog("Notification received: $event");
     for (String word in titleWords) {
       if (titleKeywords.contains(word)) {
         titleMatch = true;
+        dlog(word + "found");
         break;
       }
     }
@@ -78,10 +84,11 @@ dlog("Notification received: $event");
     for (String word in contentWords) {
       if (contentKeywords.contains(word)) {
         contentMatch = true;
+        dlog(word + "found");
         break;
       }
     }
-
-    return (titleMatch || contentMatch) && !notif.hasRemoved!;
+    final res = (titleMatch || contentMatch) && !notif.hasRemoved!;
+    return Future.value(res);
   }
 }

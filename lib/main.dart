@@ -10,7 +10,7 @@ import 'package:stock_notif/views/newHome.dart';
 
 void main() async {
   await InitServices().init();
-  runApp(const ProviderScope(child: const MyApp()));
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatefulWidget {
